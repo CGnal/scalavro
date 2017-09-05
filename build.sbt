@@ -73,10 +73,17 @@ pomExtra in (ThisBuild) := (
       </developers>
     )
 
-publishTo in (ThisBuild) <<= version { (v: String) =>
-      val nexus = "https://oss.sonatype.org/"
-      if (v.trim.endsWith("SNAPSHOT"))
-        Some("snapshots" at nexus + "content/repositories/snapshots")
-      else
-        Some("releases"  at nexus + "service/local/staging/deploy/maven2")
-    }
+publishMavenStyle in ThisBuild := true
+
+credentials in ThisBuild += Credentials(Path.userHome / ".sbt" / ".credentials")
+
+isSnapshot in ThisBuild := false
+// Select repository to publish to based on whether the current project is a
+// SNAPSHOT or release version.
+publishTo in ThisBuild := {
+  val nexus = "http://repo.eligotech.com/nexus/"
+  if (isSnapshot.value)
+    Some("snapshots" at nexus + "content/repositories/snapshots")
+  else
+    Some("releases" at nexus + "content/repositories/releases")
+}
