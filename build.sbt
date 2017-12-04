@@ -30,7 +30,8 @@ scalaVersion in ThisBuild := Common.SCALA_VERSION
 libraryDependencies in ThisBuild ++= Seq(
       "org.scala-lang" % "scala-reflect" % Common.SCALA_VERSION,
       "org.slf4j" % "slf4j-api" % Common.SLF4J_VERSION,
-      "com.typesafe.scala-logging" %% "scala-logging" % Common.SCALA_LOGGING_VERSION,
+      "com.typesafe.scala-logging" %% "scala-logging-slf4j" % Common.SCALA_SLF4J_LOGGING_VERSION,
+      "com.typesafe.scala-logging" %% "scala-logging-api" % Common.SCALA_SLF4J_LOGGING_VERSION,
       "org.slf4j" % "slf4j-simple" % Common.SLF4J_VERSION % "test",
       "org.scalatest" %% "scalatest" % Common.SCALATEST_VERSION % "test"
     )
@@ -73,10 +74,16 @@ pomExtra in (ThisBuild) := (
       </developers>
     )
 
-publishTo in (ThisBuild) <<= version { (v: String) =>
-      val nexus = "https://oss.sonatype.org/"
-      if (v.trim.endsWith("SNAPSHOT"))
-        Some("snapshots" at nexus + "content/repositories/snapshots")
-      else
-        Some("releases"  at nexus + "service/local/staging/deploy/maven2")
-    }
+val nexusRepoBase = "http://repo.eligotech.com/nexus"
+
+def snapshotsRepo = "Eligotech Snapshots" at s"$nexusRepoBase/content/repositories/snapshots"
+
+def releasesRepo  = "Eligotech Releases"  at s"$nexusRepoBase/content/repositories/releases"
+def defaultOrganization = "com.cgnal"
+
+def publishRepo(isSnapshot: Boolean) = if (isSnapshot) Some { snapshotsRepo } else Some { releasesRepo }
+
+
+isSnapshot in (ThisBuild) := version.value.endsWith("SNAPSHOT")
+
+publishTo in (ThisBuild) := publishRepo(isSnapshot.value)

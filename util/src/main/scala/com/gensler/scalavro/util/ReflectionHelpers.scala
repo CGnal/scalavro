@@ -1,21 +1,19 @@
 package com.gensler.scalavro.util
 
-import com.typesafe.scalalogging.LazyLogging
-
 import scala.collection.immutable.ListMap
-import scala.reflect.api.{ Universe, Mirror, TypeCreator }
+import scala.reflect.api.{ Mirror, TypeCreator, Universe }
 import scala.reflect.ClassTag
 import scala.reflect.runtime.universe._
 import scala.collection.mutable.Builder
-
 import com.typesafe.config.{ Config, ConfigFactory }
+import com.typesafe.scalalogging.slf4j.StrictLogging
 
 /**
   * Companion object for [[ReflectionHelpers]]
   */
 object ReflectionHelpers extends ReflectionHelpers
 
-trait ReflectionHelpers extends LazyLogging {
+trait ReflectionHelpers extends StrictLogging {
 
   protected[scalavro] val classLoaderMirror = runtimeMirror(getClass.getClassLoader)
 
