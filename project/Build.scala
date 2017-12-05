@@ -7,7 +7,7 @@ object Common {
 
   val ORGANIZATION = "com.gensler"
   val PROJECT_NAME = "scalavro"
-  val PROJECT_VERSION = "0.7.0-cgnal"
+  val PROJECT_VERSION = "0.7.1-cgnal"
 
   val SCALA_VERSION = "2.11.11"
   val SCALA_XML_VERSION = "1.0.5"
@@ -22,7 +22,7 @@ object Common {
   val REFLECTIONS_VERSION = "0.9.9-RC1"
   val TYPESAFE_CONFIG_VERSION = "1.3.0"
   val SLF4J_VERSION   = "1.7.25"
-  val SCALA_LOGGING_VERSION = "3.1.0"
+  val SCALA_SLF4J_LOGGING_VERSION   = "2.1.2"
 
   val commonSettings =
     net.virtualvoid.sbt.graph.Plugin.graphSettings ++
